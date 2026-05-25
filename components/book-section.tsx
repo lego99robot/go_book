@@ -133,7 +133,8 @@ export function BookSection({
       )}
 
       {/* Book illustration with parallax */}
-      <div 
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
         style={{ 
           transform: `translateY(${parallax.y}px)`,
           transition: "transform 0.1s ease-out",
@@ -169,7 +170,7 @@ export function BookSection({
       {/* Section inner content with fade-in animation */}
       <div 
         ref={inViewRef}
-        className="relative z-[2] w-full max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(19rem,0.78fr)_minmax(23rem,1fr)_minmax(17rem,0.66fr)] gap-[clamp(1.5rem,3vw,3.5rem)] items-center"
+        className="relative z-[3] w-full max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(19rem,0.78fr)_minmax(23rem,1fr)_minmax(17rem,0.66fr)] gap-[clamp(1.5rem,3vw,3.5rem)] items-center"
         style={{
           opacity: isInView ? 1 : 0,
           transform: isInView ? "translateY(0)" : "translateY(40px)",
@@ -206,7 +207,7 @@ export function BookSection({
                 </span>
               </h2>
             ) : (
-              <h2 className="m-0 max-w-[9.2ch] font-serif text-[clamp(2.25rem,3.65vw,3.95rem)] font-bold leading-[1.04]">
+              <h2 className="m-0 max-w-[9.2ch] font-serif text-[clamp(2.25rem,3.65vw,3.95rem)] font-bold leading-[1.04] text-balance">
                 {book.title}
               </h2>
             )}
@@ -270,7 +271,7 @@ export function BookSection({
               className="absolute left-[-0.28rem] top-4 w-2 h-2 rotate-45"
               style={{ background: palette.accent }}
             />
-            <p className="m-0 text-[clamp(1rem,1.4vw,1.18rem)] leading-relaxed">
+            <p className="m-0 text-[clamp(1rem,1.4vw,1.18rem)] leading-relaxed text-pretty">
               {book.note}
             </p>
           </div>
@@ -310,6 +311,7 @@ export function BookSection({
                     className="mood-fill"
                     style={{ 
                       "--value": `${mood.value}%`,
+                      transform: isInView ? "scaleX(1)" : "scaleX(0)",
                       transitionDelay: `${i * 150 + 300}ms`,
                     } as React.CSSProperties}
                   />
@@ -374,7 +376,7 @@ export function BookSection({
             <p className="m-0 mb-4 uppercase text-xs font-bold tracking-[0.16em]">
               Цитата читателя
             </p>
-            <blockquote className="m-0 font-serif text-[clamp(1.35rem,2vw,2.1rem)] leading-tight">
+            <blockquote className="m-0 font-serif text-[clamp(1.35rem,2vw,2.1rem)] leading-tight text-pretty">
               &ldquo;{book.quote}&rdquo;
             </blockquote>
           </div>

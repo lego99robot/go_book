@@ -131,7 +131,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
 
           {/* Hero section with parallax */}
           <section 
-            className="relative min-h-[70vh] flex items-center justify-center overflow-hidden px-6 py-20"
+            className="relative min-h-[70vh] flex items-center justify-center overflow-hidden px-[clamp(1rem,4vw,1.5rem)] py-[clamp(5rem,10vw,8rem)]"
             style={{
               transform: `translateY(${scrollY * 0.3}px)`,
             }}
@@ -186,7 +186,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
               </p>
               <h1 
                 id="immersive-title"
-                className="font-serif text-[clamp(2.5rem,8vw,6rem)] font-bold leading-[0.9] mb-6"
+                className="font-serif text-[clamp(2.5rem,8vw,6rem)] font-bold leading-[0.9] mb-6 text-balance"
                 style={{
                   animation: "fadeInUp 0.6s ease-out 0.3s both",
                 }}
@@ -202,7 +202,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                 {book.author}
               </p>
               <p 
-                className="text-[clamp(1.1rem,2.5vw,1.5rem)] leading-relaxed max-w-2xl mx-auto font-serif italic"
+                className="text-[clamp(1.1rem,2.5vw,1.5rem)] leading-relaxed max-w-2xl mx-auto font-serif italic text-pretty"
                 style={{ 
                   color: `color-mix(in srgb, ${palette.ink} 80%, ${palette.accent})`,
                   animation: "fadeInUp 0.6s ease-out 0.5s both",
@@ -237,7 +237,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                     <Sparkles size={28} style={{ color: palette.accent }} />
                     Атмосфера
                   </h2>
-                  <p className="text-lg leading-relaxed opacity-90">
+                  <p className="text-lg leading-relaxed opacity-90 text-pretty">
                     {immersive.atmosphere}
                   </p>
                 </div>
@@ -252,7 +252,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                   <p className="text-sm font-bold tracking-widest uppercase mb-4 opacity-60">
                     Визуальный образ
                   </p>
-                  <p className="text-lg leading-relaxed italic font-serif">
+                  <p className="text-lg leading-relaxed italic font-serif text-pretty">
                     {immersive.illustration}
                   </p>
                 </div>
@@ -275,7 +275,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                 {immersive.keyThemes.map((theme, index) => (
                   <div 
                     key={index}
-                    className="p-6 flex items-start gap-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl animate-fade-in-up"
+                    className="min-w-0 p-6 flex items-start gap-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl animate-fade-in-up"
                     style={{
                       background: `color-mix(in srgb, ${palette.paper} 90%, ${palette.accent})`,
                       borderBottom: `3px solid ${palette.accent}`,
@@ -289,7 +289,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                     >
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <p className="text-lg">{theme}</p>
+                    <p className="min-w-0 text-lg text-pretty">{theme}</p>
                   </div>
                 ))}
               </div>
@@ -303,7 +303,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                 <Heart size={28} style={{ color: palette.accent }} className="animate-pulse" />
                 Эмоциональное путешествие
               </h2>
-              <p className="text-xl leading-relaxed opacity-90">
+              <p className="text-xl leading-relaxed opacity-90 text-pretty">
                 {immersive.emotionalJourney}
               </p>
               
@@ -343,11 +343,11 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
                 className="mx-auto mb-8 opacity-30 animate-bounce-slow"
                 style={{ color: palette.accent }}
               />
-              <div className="relative h-32 flex items-center justify-center">
+              <div className="relative min-h-[13rem] sm:min-h-40 flex items-center justify-center">
                 {immersive.quotes.map((quote, index) => (
                   <p
                     key={index}
-                    className={`absolute inset-0 flex items-center justify-center font-serif text-2xl md:text-3xl italic leading-relaxed transition-all duration-700 ${
+                    className={`absolute inset-0 flex items-center justify-center px-1 font-serif text-[clamp(1.35rem,5vw,1.875rem)] italic leading-relaxed text-pretty transition-all duration-700 ${
                       index === activeQuoteIndex ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
                     }`}
                   >
@@ -458,7 +458,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
               <h2 className="font-serif text-4xl font-bold mb-6">
                 Готовы к погружению?
               </h2>
-              <p className="text-xl opacity-80 mb-10">
+              <p className="text-xl opacity-80 mb-10 text-pretty">
                 {book.description}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -15,6 +15,11 @@ export function PurchaseSection({ selectedBookKey, onSelectBook, showToast }: Pu
   
   const selectedBook = books.find(b => b.key === selectedBookKey) || books[0];
   const price = selectedBook.basePrice * formatPriceFactor[format];
+  const isMobyPurchase = selectedBook.key === "moby";
+  const activeFormatBackground = isMobyPurchase
+    ? selectedBook.palette.shade
+    : `color-mix(in srgb, ${selectedBook.palette.accent} 64%, #f4f1e8)`;
+  const activeFormatTextColor = isMobyPurchase ? "#f7f4ea" : "#171512";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,15 +200,19 @@ export function PurchaseSection({ selectedBookKey, onSelectBook, showToast }: Pu
                     className="absolute opacity-0 pointer-events-none"
                   />
                   <span 
-                    className={`grid min-h-12 place-items-center py-3 px-4 text-[#f7f4ea] font-extrabold text-center border cursor-pointer transition-all duration-200 ${
+                    className={`grid min-h-12 place-items-center py-3 px-4 font-extrabold text-center border cursor-pointer transition-all duration-200 ${
                       format === f 
-                        ? "text-[#171512]" 
+                        ? "" 
                         : "border-[rgba(244,241,232,0.3)]"
                     }`}
                     style={format === f ? {
-                      background: `color-mix(in srgb, ${selectedBook.palette.accent} 64%, #f4f1e8)`,
+                      background: activeFormatBackground,
+                      color: activeFormatTextColor,
+                      borderColor: activeFormatBackground,
                       boxShadow: "5px 5px 0 rgba(244, 241, 232, 0.18)",
-                    } : {}}
+                    } : {
+                      color: "#f7f4ea",
+                    }}
                   >
                     {f === "print" ? "Печатная" : f === "ebook" ? "Электронная" : "Подарочная"}
                   </span>
