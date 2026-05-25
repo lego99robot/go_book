@@ -1,0 +1,562 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --bg: #f4f0e7;
+  --text: #171512;
+  --muted: #686056;
+  --line: rgba(23, 21, 18, 0.16);
+  --cream: #f4f0e7;
+  --black: #171512;
+  --red: #c84733;
+  --blue: #173c55;
+  --yellow: #e8b54c;
+  --green: #2f6f5f;
+  --portal-primary: #e967b1;
+  --portal-secondary: #b8ddf1;
+  --portal-dark: #1d1922;
+  --portal-light: #fff6c7;
+  --portal-glow: rgba(233, 103, 177, 0.26);
+  --mx: 0;
+  --my: 0;
+  --header-h: 74px;
+  
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted-color: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --font-sans: 'Commissioner', 'Segoe UI', sans-serif;
+  --font-serif: 'Cormorant', Georgia, serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted-color);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+  }
+  
+  body {
+    margin: 0;
+    min-width: 320px;
+    color: var(--text);
+    background:
+      linear-gradient(115deg, rgba(232, 181, 76, 0.14), transparent 26rem),
+      linear-gradient(245deg, rgba(23, 60, 85, 0.12), transparent 30rem),
+      var(--bg);
+    overflow-x: hidden;
+    font-family: 'Commissioner', 'Segoe UI', sans-serif;
+  }
+}
+
+/* Noise overlay */
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.055;
+  background-image: repeating-radial-gradient(circle at 0 0, rgba(0, 0, 0, 0.34) 0 1px, transparent 1px 5px);
+  mix-blend-mode: multiply;
+}
+
+/* Portal field */
+.portal-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.portal-field::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  background:
+    radial-gradient(circle at calc(64% + var(--mx) * 7%) calc(42% + var(--my) * 5%), var(--portal-glow), transparent 26rem),
+    linear-gradient(115deg, transparent 0 42%, color-mix(in srgb, var(--portal-secondary) 16%, transparent) 42% 44%, transparent 44%);
+  transition: background 500ms ease;
+}
+
+.portal-core {
+  position: absolute;
+  top: 50%;
+  right: clamp(1rem, 7vw, 8rem);
+  width: min(38vw, 34rem);
+  aspect-ratio: 1 / 1;
+  transform:
+    translate3d(calc(var(--mx) * 18px), calc(-50% + var(--my) * 12px), 0)
+    rotate(calc(-7deg + var(--mx) * 3deg));
+  transition:
+    transform 260ms ease-out,
+    filter 500ms ease;
+  filter: drop-shadow(28px 32px 0 rgba(23, 21, 18, 0.08));
+}
+
+.portal-piece,
+.portal-orbit {
+  position: absolute;
+  display: block;
+  border: 1px solid color-mix(in srgb, var(--portal-dark) 72%, transparent);
+  transition:
+    background 500ms ease,
+    border-color 500ms ease,
+    transform 260ms ease-out;
+}
+
+.portal-piece {
+  box-shadow:
+    10px 12px 0 color-mix(in srgb, var(--portal-dark) 68%, transparent),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.piece-a {
+  left: 4%;
+  top: 17%;
+  width: 18%;
+  height: 44%;
+  background: var(--portal-primary);
+  transform: translate(calc(var(--mx) * -16px), calc(var(--my) * 12px)) rotate(-8deg);
+}
+
+.piece-b {
+  left: 24%;
+  top: 8%;
+  width: 15%;
+  height: 58%;
+  background: var(--portal-dark);
+  transform: translate(calc(var(--mx) * -8px), calc(var(--my) * -10px)) rotate(5deg);
+}
+
+.piece-c {
+  left: 43%;
+  top: 19%;
+  width: 13%;
+  height: 40%;
+  background: var(--portal-secondary);
+  transform: translate(calc(var(--mx) * 10px), calc(var(--my) * 8px)) rotate(-2deg);
+}
+
+.piece-d {
+  left: 60%;
+  top: 10%;
+  width: 18%;
+  height: 48%;
+  background: var(--portal-light);
+  transform: translate(calc(var(--mx) * 18px), calc(var(--my) * -14px)) rotate(9deg);
+}
+
+.piece-e {
+  left: 78%;
+  top: 24%;
+  width: 12%;
+  height: 34%;
+  background: var(--portal-primary);
+  transform: translate(calc(var(--mx) * 24px), calc(var(--my) * 14px)) rotate(-12deg);
+}
+
+.piece-f {
+  left: 14%;
+  top: 68%;
+  width: 35%;
+  height: 9%;
+  background: var(--portal-light);
+  transform: translate(calc(var(--mx) * -12px), calc(var(--my) * 18px)) skew(-12deg);
+}
+
+.piece-g {
+  left: 52%;
+  top: 70%;
+  width: 31%;
+  height: 10%;
+  background: var(--portal-dark);
+  transform: translate(calc(var(--mx) * 14px), calc(var(--my) * 20px)) skew(10deg);
+}
+
+.piece-h {
+  left: 84%;
+  top: 7%;
+  width: 10%;
+  height: 10%;
+  background: transparent;
+  transform: translate(calc(var(--mx) * 34px), calc(var(--my) * -22px)) rotate(18deg);
+}
+
+.portal-orbit {
+  left: 9%;
+  top: 4%;
+  width: 76%;
+  height: 76%;
+  border-color: color-mix(in srgb, var(--portal-dark) 26%, transparent);
+  background: transparent;
+  box-shadow: none;
+  transform:
+    translate(calc(var(--mx) * 8px), calc(var(--my) * -8px))
+    rotate(45deg);
+}
+
+.orbit-two {
+  left: 21%;
+  top: 18%;
+  width: 57%;
+  height: 57%;
+  border-color: color-mix(in srgb, var(--portal-primary) 40%, transparent);
+  transform:
+    translate(calc(var(--mx) * -10px), calc(var(--my) * 8px))
+    rotate(-15deg);
+}
+
+/* Section seams */
+.section-seam {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: clamp(4.5rem, 8vw, 7.5rem);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.section-seam svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.section-seam path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent-color, #f4f1e8) 52%, transparent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Book illustrations */
+.book-illustration {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.64;
+  mix-blend-mode: normal;
+}
+
+.book-illustration svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.book-illustration path,
+.book-illustration circle {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Alice illustration */
+.alice-illustration {
+  right: -7rem;
+  bottom: 2%;
+  width: min(54vw, 46rem);
+  aspect-ratio: 1;
+  transform: rotate(-11deg);
+}
+
+.alice-illustration path,
+.alice-illustration circle {
+  fill: color-mix(in srgb, #e967b1 54%, transparent);
+  stroke: #1d1922;
+  stroke-width: 3;
+}
+
+.alice-illustration path:nth-child(even) {
+  fill: color-mix(in srgb, #b8ddf1 55%, transparent);
+}
+
+/* Frankenstein illustration */
+.frank-illustration {
+  right: -8rem;
+  top: 3%;
+  width: min(58vw, 50rem);
+  aspect-ratio: 1;
+  opacity: 0.34;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 0 28px rgba(148, 255, 185, 0.18));
+}
+
+.frank-illustration path {
+  fill: none;
+  stroke: #94ffb9;
+  stroke-width: 7;
+  stroke-linejoin: bevel;
+}
+
+.frank-illustration path:nth-child(1),
+.frank-illustration path:nth-child(2) {
+  fill: rgba(148, 255, 185, 0.12);
+}
+
+/* Moby illustration */
+.moby-illustration {
+  right: -4rem;
+  bottom: -4rem;
+  width: min(76vw, 64rem);
+  aspect-ratio: 1;
+  opacity: 0.78;
+  transform: rotate(-5deg);
+  filter:
+    drop-shadow(0 0 34px rgba(244, 241, 232, 0.16))
+    drop-shadow(0 26px 0 rgba(29, 78, 137, 0.24));
+}
+
+.moby-illustration path,
+.moby-illustration circle {
+  fill: rgba(244, 241, 232, 0.72);
+  stroke: #f4f1e8;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.moby-illustration .whale-belly {
+  fill: rgba(244, 241, 232, 0.34);
+  stroke: rgba(244, 241, 232, 0.78);
+}
+
+.moby-illustration .whale-tail,
+.moby-illustration .whale-fin {
+  fill: rgba(244, 241, 232, 0.52);
+  stroke: rgba(244, 241, 232, 0.9);
+}
+
+.moby-illustration .sea-line {
+  fill: none;
+  stroke: rgba(111, 177, 212, 0.66);
+  stroke-width: 3;
+}
+
+.moby-illustration .whale-eye {
+  fill: #07111f;
+  stroke: rgba(244, 241, 232, 0.92);
+  stroke-width: 2;
+}
+
+/* Mood bars */
+.mood-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--value);
+  background:
+    repeating-linear-gradient(
+      -20deg,
+      rgba(255, 255, 255, 0.18) 0 2px,
+      transparent 2px 7px
+    ),
+    linear-gradient(90deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 55%, var(--shade-color)));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent-color) 24%, transparent);
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  right: clamp(1rem, 4vw, 3rem);
+  bottom: 1.25rem;
+  z-index: 50;
+  max-width: min(25rem, calc(100vw - 2rem));
+  padding: 1rem 1.15rem;
+  color: #f9f3e7;
+  background: rgba(23, 21, 18, 0.9);
+  border: 1px solid rgba(249, 243, 231, 0.16);
+  transform: translateY(140%);
+  opacity: 0;
+  transition:
+    transform 220ms ease,
+    opacity 220ms ease;
+}
+
+.toast.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Immersive Modal */
+.immersive-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.immersive-backdrop.is-open {
+  opacity: 1;
+}
+
+.immersive-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease;
+}
+
+.immersive-modal.is-open {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Purchase ornament */
+.purchase-ornament {
+  position: absolute;
+  top: clamp(1.4rem, 3vw, 2.8rem);
+  right: clamp(0.5rem, 3vw, 3rem);
+  z-index: 0;
+  width: min(58vw, 56rem);
+  height: clamp(10rem, 18vw, 16.5rem);
+  pointer-events: none;
+  opacity: 0.62;
+}
+
+.ornament-vessel {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(10px 12px 0 rgba(33, 26, 23, 0.08));
+  transform-origin: center;
+}
+
+.purchase-ornament svg {
+  height: auto;
+  overflow: visible;
+}
+
+.purchase-ornament path {
+  vector-effect: non-scaling-stroke;
+}
+
+.ornament-sheet {
+  fill: rgba(255, 248, 226, 0.72);
+  stroke: rgba(33, 26, 23, 0.46);
+  stroke-width: 2;
+}
+
+.ornament-book {
+  fill: rgba(233, 103, 177, 0.36);
+  stroke: rgba(33, 26, 23, 0.58);
+  stroke-width: 2;
+}
+
+.ornament-book.dark {
+  fill: rgba(29, 78, 137, 0.34);
+}
+
+.ornament-ribbon {
+  fill: rgba(148, 255, 185, 0.44);
+  stroke: rgba(33, 26, 23, 0.5);
+  stroke-width: 2;
+}
+
+.ornament-sail {
+  fill: rgba(255, 248, 226, 0.52);
+  stroke: rgba(33, 26, 23, 0.5);
+  stroke-width: 2;
+}
+
+.ornament-keel {
+  fill: rgba(29, 78, 137, 0.24);
+  stroke: rgba(33, 26, 23, 0.46);
+  stroke-width: 2;
+}
+
+.ornament-line {
+  fill: none;
+  stroke: rgba(33, 26, 23, 0.24);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Responsive adjustments */
+@media (max-width: 720px) {
+  :root {
+    --header-h: 64px;
+  }
+  
+  .portal-core {
+    top: auto;
+    right: -30vw;
+    bottom: 5vh;
+    width: 96vw;
+    opacity: 0.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  
+  .portal-core,
+  .portal-piece,
+  .portal-orbit {
+    transform: none !important;
+  }
+}
