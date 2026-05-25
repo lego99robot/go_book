@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { BookData } from "@/lib/books-data";
 import { BookIllustration, SectionSeam } from "./book-illustrations";
+import { FloatingParticles } from "./floating-particles";
+import { MagneticButton, MagneticLink } from "./magnetic-button";
+import { useInView } from "@/hooks/use-in-view";
+import { useParallax } from "@/hooks/use-parallax";
 import { Eye } from "lucide-react";
 
 interface BookSectionProps {
@@ -24,9 +28,12 @@ export function BookSection({
 }: BookSectionProps) {
   const [comment, setComment] = useState("");
   const [demoNote, setDemoNote] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [inViewRef, isInView] = useInView({ threshold: 0.2, rootMargin: "-50px" });
+  const parallax = useParallax(sectionRef, 0.3);
 
   const sectionId = book.key === "moby" ? "moby-dick" : book.key;
-  const { palette } = book;
+  const { palette, sceneTheme } = book;
 
   const bookStyles = {
     "--accent-color": palette.accent,
@@ -50,9 +57,7 @@ export function BookSection({
   };
 
   const handleNoteSubmit = () => {
-    if (!comment.trim()) {
-      return;
-    }
+    if (!comment.trim()) return;
     setDemoNote(comment);
     setComment("");
   };
@@ -105,6 +110,7 @@ export function BookSection({
   return (
     <section
       id={sectionId}
+      ref={sectionRef}
       className="relative min-h-[105vh] py-[clamp(5rem,8vw,8.5rem)] px-[clamp(1rem,5vw,5rem)] overflow-hidden isolate"
       style={{
         ...bookStyles,
@@ -114,13 +120,27 @@ export function BookSection({
       }}
       data-book-index={index}
     >
+      {/* Floating particles */}
+      <FloatingParticles 
+        bookKey={book.key} 
+        theme={sceneTheme} 
+        isActive={isInView} 
+      />
+
       {/* Seam for non-first sections */}
       {index > 0 && (
         <SectionSeam variant={isFrankenstein ? "frank" : isMoby ? "moby" : "frank"} />
       )}
 
-      {/* Book illustration */}
-      <BookIllustration bookKey={book.key} />
+      {/* Book illustration with parallax */}
+      <div 
+        style={{ 
+          transform: `translateY(${parallax.y}px)`,
+          transition: "transform 0.1s ease-out",
+        }}
+      >
+        <BookIllustration bookKey={book.key} />
+      </div>
 
       {/* Decorative patterns */}
       {isAlice && (
@@ -132,6 +152,7 @@ export function BookSection({
                           linear-gradient(45deg, #1d1922 25%, transparent 25% 75%, #1d1922 75%)`,
               backgroundPosition: "0 0, 1.3rem 1.3rem",
               backgroundSize: "2.6rem 2.6rem",
+              transform: `rotate(12deg) skewX(-6deg) translateY(${parallax.y * 0.5}px)`,
             }}
           />
           <div 
@@ -145,10 +166,24 @@ export function BookSection({
         </>
       )}
 
-      {/* Section inner content */}
-      <div className="relative z-[2] w-full max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(19rem,0.78fr)_minmax(23rem,1fr)_minmax(17rem,0.66fr)] gap-[clamp(1.5rem,3vw,3.5rem)] items-center">
-        {/* Book meta */}
-        <div className="relative min-w-0">
+      {/* Section inner content with fade-in animation */}
+      <div 
+        ref={inViewRef}
+        className="relative z-[2] w-full max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(19rem,0.78fr)_minmax(23rem,1fr)_minmax(17rem,0.66fr)] gap-[clamp(1.5rem,3vw,3.5rem)] items-center"
+        style={{
+          opacity: isInView ? 1 : 0,
+          transform: isInView ? "translateY(0)" : "translateY(40px)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+        }}
+      >
+        {/* Book meta with staggered animation */}
+        <div 
+          className="relative min-w-0"
+          style={{
+            transform: `translateY(${parallax.y * -0.5}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
+        >
           <p 
             className="m-0 mb-4 uppercase text-xs font-bold tracking-[0.16em]"
             style={{ color: palette.accent }}
@@ -191,9 +226,9 @@ export function BookSection({
           />
         </div>
 
-        {/* Book content */}
+        {/* Book content with levitation effect on hover */}
         <div 
-          className="relative z-[3] min-w-0 max-w-[42rem] p-[clamp(1.15rem,2.2vw,1.7rem)] backdrop-blur-[8px]"
+          className="relative z-[3] min-w-0 max-w-[42rem] p-[clamp(1.15rem,2.2vw,1.7rem)] backdrop-blur-[8px] transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
           style={{
             borderLeft: `4px solid ${palette.accent}`,
             background: `repeating-linear-gradient(150deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 8px),
@@ -273,16 +308,19 @@ export function BookSection({
                 >
                   <span 
                     className="mood-fill"
-                    style={{ "--value": `${mood.value}%` } as React.CSSProperties}
+                    style={{ 
+                      "--value": `${mood.value}%`,
+                      transitionDelay: `${i * 150 + 300}ms`,
+                    } as React.CSSProperties}
                   />
                 </span>
               </div>
             ))}
           </div>
 
-          {/* Actions */}
+          {/* Actions with magnetic buttons */}
           <div className="flex flex-wrap items-center gap-3 mt-6">
-            <button
+            <MagneticButton
               onClick={() => onOpenImmersive(book)}
               className="min-h-[46px] inline-flex items-center justify-center gap-2 border px-5 py-3 font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
               style={{
@@ -291,11 +329,12 @@ export function BookSection({
                 borderColor: palette.ink,
                 boxShadow: `5px 5px 0 ${palette.ink}`,
               }}
+              intensity={0.2}
             >
               <Eye size={18} />
               Погрузиться в мир
-            </button>
-            <button
+            </MagneticButton>
+            <MagneticButton
               onClick={() => onBuy(book.key)}
               className="min-h-[46px] inline-flex items-center justify-center border px-5 py-3 font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
               style={{
@@ -303,27 +342,33 @@ export function BookSection({
                 color: palette.ink,
                 borderColor: palette.ink,
               }}
+              intensity={0.2}
             >
               Купить книгу
-            </button>
-            <a 
+            </MagneticButton>
+            <MagneticLink 
               href={nextBookHref}
               className="min-h-[46px] inline-flex items-center justify-center border border-current px-5 py-3 font-bold cursor-pointer transition-all duration-200 bg-transparent hover:-translate-y-0.5"
               style={{ color: palette.ink }}
+              intensity={0.2}
             >
               {nextBookLabel}
-            </a>
+            </MagneticLink>
           </div>
         </div>
 
-        {/* Aside */}
+        {/* Aside with staggered animation */}
         <aside 
           className="relative z-[4] grid gap-4 self-stretch min-w-0"
           id={isMoby ? "comments" : undefined}
+          style={{
+            transform: `translateY(${parallax.y * 0.3}px)`,
+            transition: "transform 0.15s ease-out",
+          }}
         >
-          {/* Quote card */}
+          {/* Quote card with hover levitation */}
           <div 
-            className="relative p-[clamp(1rem,2vw,1.45rem)] border -rotate-[1.1deg]"
+            className="relative p-[clamp(1rem,2vw,1.45rem)] border -rotate-[1.1deg] transition-all duration-300 hover:-translate-y-1 hover:rotate-0"
             style={getQuoteCardStyle()}
           >
             <p className="m-0 mb-4 uppercase text-xs font-bold tracking-[0.16em]">
@@ -336,7 +381,7 @@ export function BookSection({
 
           {/* Comment card */}
           <div 
-            className="relative z-[2] min-h-72 p-[clamp(1rem,2vw,1.45rem)] border border-[rgba(37,27,20,0.3)] text-[#251b14]"
+            className="relative z-[2] min-h-72 p-[clamp(1rem,2vw,1.45rem)] border border-[rgba(37,27,20,0.3)] text-[#251b14] transition-all duration-300 hover:-translate-y-1"
             style={getCommentCardStyle()}
           >
             <p className="m-0 mb-4 uppercase text-xs font-bold tracking-[0.16em]">
@@ -350,7 +395,7 @@ export function BookSection({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Напишите впечатление..."
-              className="w-full min-h-28 resize-y border border-[rgba(37,27,20,0.28)] bg-[rgba(255,255,255,0.42)] text-[#251b14] p-4 outline-none focus:border-[#251b14] focus:shadow-[0_0_0_3px_rgba(37,27,20,0.1)]"
+              className="w-full min-h-28 resize-y border border-[rgba(37,27,20,0.28)] bg-[rgba(255,255,255,0.42)] text-[#251b14] p-4 outline-none focus:border-[#251b14] focus:shadow-[0_0_0_3px_rgba(37,27,20,0.1)] transition-all duration-200"
             />
             <button
               onClick={handleNoteSubmit}
@@ -359,7 +404,7 @@ export function BookSection({
               Приклеить
             </button>
             {demoNote && (
-              <p className="mt-4 p-3 border border-dashed border-[rgba(37,27,20,0.35)] bg-[rgba(255,255,255,0.32)] leading-relaxed">
+              <p className="mt-4 p-3 border border-dashed border-[rgba(37,27,20,0.35)] bg-[rgba(255,255,255,0.32)] leading-relaxed animate-fade-in">
                 Демо-комментарий: {demoNote}
               </p>
             )}
