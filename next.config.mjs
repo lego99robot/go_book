@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const isGithubPages = process.env.GITHUB_ACTIONS === "true"
-const basePath = isGithubPages ? "/web_book" : ""
+const basePath = isGithubPages ? "/go_book" : ""
 
 const nextConfig = {
   output: "export",
