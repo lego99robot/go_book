@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Личная библиотека прочитанных книг: интерактивный лендинг с атмосферными страницами книг."
+    />
+    <title>Личная библиотека</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Commissioner:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="portal-field" aria-hidden="true">
+      <div class="portal-core">
+        <span class="portal-piece piece-a"></span>
+        <span class="portal-piece piece-b"></span>
+        <span class="portal-piece piece-c"></span>
+        <span class="portal-piece piece-d"></span>
+        <span class="portal-piece piece-e"></span>
+        <span class="portal-piece piece-f"></span>
+        <span class="portal-piece piece-g"></span>
+        <span class="portal-piece piece-h"></span>
+        <span class="portal-orbit orbit-one"></span>
+        <span class="portal-orbit orbit-two"></span>
+      </div>
+    </div>
+
+    <header class="site-header" aria-label="Главная навигация">
+      <a class="brand" href="#top" aria-label="К началу страницы">
+        <span class="brand-mark"></span>
+        <span>Читательская полка</span>
+      </a>
+      <nav class="book-nav" aria-label="Навигация по книгам">
+        <a class="version-switch" href="../" target="_top">Новая версия</a>
+        <a href="#alice">Алиса</a>
+        <a href="#frankenstein">Франкенштейн</a>
+        <a href="#moby-dick">Моби Дик</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" data-scene="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Личная библиотека прочитанных книг</p>
+          <h1>Три книги. Три атмосферы. Один живой портал чтения.</h1>
+          <p class="hero-text">
+            Минималистичная полка превращается в кубистическую карту впечатлений:
+            каждая книга меняет свет, геометрию и настроение страницы.
+          </p>
+          <div class="hero-actions" aria-label="Действия">
+            <a class="primary-link" href="#alice">Открыть библиотеку</a>
+            <a class="ghost-link" href="#comments">Оставить заметку</a>
+          </div>
+        </div>
+
+      </section>
+
+      <section
+        id="alice"
+        class="book-section book-alice alice-stage"
+        data-book-index="0"
+        style="--accent: #e967b1; --ink: #1d1922; --paper: #f7efd8; --shade: #b8ddf1"
+      >
+        <div class="book-illustration alice-illustration" aria-hidden="true">
+          <svg viewBox="0 0 560 560" role="img">
+            <path d="M64 130h118v118H64zM182 248h118v118H182zM300 130h118v118H300zM64 366h118v118H64z" />
+            <circle cx="392" cy="354" r="86" />
+            <path d="M392 246c54 58 53 158 0 216c-54-58-53-158 0-216Z" />
+            <path d="M438 91c-39 24-55 62-47 115c36-27 53-65 47-115Z" />
+          </svg>
+        </div>
+        <div class="section-inner">
+          <div class="book-meta">
+            <p class="chapter">01 / шахматная нелогика</p>
+            <div class="title-block">
+              <h2>Алиса в Стране чудес</h2>
+            </div>
+            <p class="author">Льюис Кэрролл</p>
+          </div>
+          <div class="book-content">
+            <p>
+              Мир, где правило может быть шуткой, дверь может быть вопросом, а
+              взрослая логика тает как сахар в чае. Эта страница собрана из
+              пастельных плоскостей, чернильных линий и сдвинутых шахматных
+              клеток.
+            </p>
+            <div class="mood-strip" aria-label="Палитра книги">
+              <span style="background: #e967b1"></span>
+              <span style="background: #f7efd8"></span>
+              <span style="background: #1d1922"></span>
+              <span style="background: #b8ddf1"></span>
+            </div>
+            <div class="book-actions">
+              <button class="buy-button" type="button" data-buy="Алиса в Стране чудес">
+                Купить книгу
+              </button>
+              <a class="read-link" href="#frankenstein">Следующая атмосфера</a>
+            </div>
+          </div>
+          <aside class="book-aside">
+            <div class="quote-card">
+              <p class="comment-label">Цитата читателя</p>
+              <blockquote>
+                “После этой книги обычная комната кажется слишком уверенной в
+                своих углах.”
+              </blockquote>
+            </div>
+            <div class="comment-card">
+              <p class="comment-label">Публичный стикер</p>
+              <label for="alice-note">Ваш комментарий</label>
+              <textarea id="alice-note" placeholder="Напишите впечатление..."></textarea>
+              <button type="button" class="note-button" data-note-for="Алиса">
+                Приклеить
+              </button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section
+        id="frankenstein"
+        class="book-section book-frankenstein frank-stage"
+        data-book-index="1"
+        style="--accent: #94ffb9; --ink: #d8f6e3; --paper: #101915; --shade: #4d6b5a"
+      >
+        <div class="book-illustration frank-illustration" aria-hidden="true">
+          <svg viewBox="0 0 560 560" role="img">
+            <path d="M146 96h178l-36 126h88L194 502l48-176h-90l-6-230Z" />
+            <path d="M360 80h88v190h-88zM89 252h92v230H89z" />
+            <path d="M421 274c-66 13-106 54-119 123c68-10 109-51 119-123Z" />
+            <path d="M103 96l115 82M431 425l-132-78M423 145l-91 94" />
+          </svg>
+        </div>
+        <div class="section-inner">
+          <div class="book-meta">
+            <p class="chapter">02 / холодное электричество</p>
+            <div class="title-block">
+              <h2 class="split-title">
+                <span>Франкен</span>
+                <span>штейн</span>
+              </h2>
+            </div>
+            <p class="author">Мэри Шелли</p>
+          </div>
+          <div class="book-content">
+            <p>
+              Здесь знание звучит как гроза над лабораторным стеклом. Секция
+              становится темной, жесткой и почти хирургической: зеленый импульс
+              проходит через черные блоки, как мысль, которой стало тесно в теле.
+            </p>
+            <div class="mood-strip" aria-label="Палитра книги">
+              <span style="background: #94ffb9"></span>
+              <span style="background: #101915"></span>
+              <span style="background: #d8f6e3"></span>
+              <span style="background: #4d6b5a"></span>
+            </div>
+            <div class="book-actions">
+              <button class="buy-button" type="button" data-buy="Франкенштейн">
+                Купить книгу
+              </button>
+              <a class="read-link" href="#moby-dick">К морю</a>
+            </div>
+          </div>
+          <aside class="book-aside">
+            <div class="quote-card dark-quote">
+              <p class="comment-label">Цитата читателя</p>
+              <blockquote>
+                “Самый страшный момент не в молнии, а в тишине после нее.”
+              </blockquote>
+            </div>
+            <div class="comment-card dark-note">
+              <p class="comment-label">Публичный стикер</p>
+              <label for="frankenstein-note">Ваш комментарий</label>
+              <textarea id="frankenstein-note" placeholder="Напишите впечатление..."></textarea>
+              <button type="button" class="note-button" data-note-for="Франкенштейн">
+                Приклеить
+              </button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section
+        id="moby-dick"
+        class="book-section book-moby moby-stage"
+        data-book-index="2"
+        style="--accent: #f4f1e8; --ink: #f7f4ea; --paper: #07111f; --shade: #1d4e89"
+      >
+        <div class="book-illustration moby-illustration" aria-hidden="true">
+          <svg viewBox="0 0 560 560" role="img">
+            <path d="M72 354c82-88 193-112 326-72c-45 92-143 142-294 150c-22 1-38-50-32-78Z" />
+            <path d="M357 276c44-60 93-83 147-69c-20 61-69 92-147 69Z" />
+            <path d="M103 432c103 23 216 14 338-27" />
+            <path d="M121 474c88 22 185 15 291-22" />
+            <circle cx="175" cy="351" r="9" />
+          </svg>
+        </div>
+        <div class="section-inner">
+          <div class="book-meta">
+            <p class="chapter">03 / белая бездна</p>
+            <div class="title-block">
+              <h2>Моби Дик</h2>
+            </div>
+            <p class="author">Герман Мелвилл</p>
+          </div>
+          <div class="book-content">
+            <p>
+              Секция дышит как горизонт: много воздуха, графитовая глубина и
+              ослепительная белая форма, которая не объясняется до конца. Книга
+              превращается в охоту за смыслом, который всегда чуть дальше линии
+              воды.
+            </p>
+            <div class="mood-strip" aria-label="Палитра книги">
+              <span style="background: #f4f1e8"></span>
+              <span style="background: #07111f"></span>
+              <span style="background: #1d4e89"></span>
+              <span style="background: #6fb1d4"></span>
+            </div>
+            <div class="book-actions">
+              <button class="buy-button" type="button" data-buy="Моби Дик">
+                Купить книгу
+              </button>
+              <a class="read-link" href="#top">Вернуться к порталу</a>
+            </div>
+          </div>
+          <aside id="comments" class="book-aside">
+            <div class="quote-card sea-quote">
+              <p class="comment-label">Цитата читателя</p>
+              <blockquote>
+                “Белый кит здесь не финал, а огромный пробел, который читатель
+                заполняет собой.”
+              </blockquote>
+            </div>
+            <div class="comment-card sea-note">
+              <p class="comment-label">Публичный стикер</p>
+              <label for="moby-note">Ваш комментарий</label>
+              <textarea id="moby-note" placeholder="Напишите впечатление..."></textarea>
+              <button type="button" class="note-button" data-note-for="Моби Дик">
+                Приклеить
+              </button>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+
+    <footer class="site-footer">
+      <p>Статический прототип для GitHub Pages. Комментарии и покупка работают как демонстрация идеи.</p>
+    </footer>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
