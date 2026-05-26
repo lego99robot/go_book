@@ -480,6 +480,17 @@
   opacity: 1;
 }
 
+.immersive-book-scene {
+  pointer-events: auto;
+  contain: layout paint;
+  transform: translateZ(0);
+}
+
+.immersive-book-scene canvas {
+  cursor: default;
+  image-rendering: auto;
+}
+
 /* Purchase ornament */
 .purchase-ornament {
   position: absolute;
@@ -585,6 +596,10 @@
     bottom: 8rem;
     width: 132vw;
     opacity: 0.5;
+  }
+
+  .immersive-book-scene {
+    height: min(48vh, 25rem);
   }
 }
 

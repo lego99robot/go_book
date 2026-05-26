@@ -7,6 +7,7 @@ import { FloatingParticles } from "./floating-particles";
 import { MagneticButton } from "./magnetic-button";
 import { WaveText } from "./wave-text";
 import { CursorGlow } from "./cursor-glow";
+import { ImmersiveBookScene } from "./immersive-book-scene";
 
 interface ImmersiveModalProps {
   book: BookData | null;
@@ -131,10 +132,7 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
 
           {/* Hero section with parallax */}
           <section 
-            className="relative min-h-[70vh] flex items-center justify-center overflow-hidden px-[clamp(1rem,4vw,1.5rem)] py-[clamp(5rem,10vw,8rem)]"
-            style={{
-              transform: `translateY(${scrollY * 0.3}px)`,
-            }}
+            className="relative min-h-[82vh] flex items-start justify-center overflow-hidden px-[clamp(1rem,4vw,1.5rem)] pt-[clamp(5.4rem,9vw,7.2rem)] pb-[clamp(17rem,34vh,22rem)]"
           >
             {/* Decorative background elements */}
             <div 
@@ -174,7 +172,14 @@ export function ImmersiveModal({ book, isOpen, onClose, onBuy }: ImmersiveModalP
               />
             </div>
 
-            <div className="relative z-10 text-center max-w-4xl mx-auto">
+            <ImmersiveBookScene
+              bookKey={book.key}
+              palette={palette}
+              isActive={isOpen}
+              scrollY={scrollY}
+            />
+
+            <div className="relative z-20 text-center max-w-4xl mx-auto">
               <p 
                 className="text-xs font-bold tracking-[0.2em] uppercase mb-6"
                 style={{ 
